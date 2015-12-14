@@ -2,7 +2,7 @@ import sublime, sublime_plugin, os, time, re
 
 class WM:
   def get_project_folder(window):
-    project_folders = [] 
+    project_folders = []
     if ( WM.has_project(window) ):
       for folder_data in window.project_data()["folders"]:
         project_folders.append(folder_data['path'])
@@ -15,7 +15,7 @@ class WM:
   def file_belongs_to_path(buffer, parent_folders, related_paths):
     file_in_project = False
     path = buffer.file_name()
-    
+
     if ( path ):
       file_dir = os.path.dirname(path)
       if ( not file_dir in related_paths ):
@@ -39,9 +39,12 @@ class lessTabsCommand(sublime_plugin.WindowCommand):
     SETTINGS = sublime.load_settings("lessTabs.sublime-settings")
     modified_ls   = int(SETTINGS.get('modified_life_span'))
     accessed_ls   = int(SETTINGS.get('accessed_life_span'))
+    keep_num_tabs = int(SETTINGS.get('keep_number_of_tabs'))
 
     now = time.time()
     active_view = sublime.active_window().active_view()
+
+    tab_buffers = []
 
     for buffer in self.window.views():
       path = buffer.file_name()
@@ -56,12 +59,15 @@ class lessTabsCommand(sublime_plugin.WindowCommand):
         and now - os.path.getmtime(path) > modified_ls
         and now - os.path.getatime(path) > accessed_ls
       ):
+        tab_buffers.append(buffer)
+
+    for buffer in tab_buffers[keep_num_tabs:]:
         WM.close_buffer(self.window, buffer)
 
 
 class lessTabsCloseProjectUnrelatedCommand(sublime_plugin.WindowCommand):
   def run(self):
-  
+
     window = self.window
 
     if ( WM.has_project(window) ):
@@ -99,7 +105,7 @@ class lessTabsCloseFileDirUnrelatedCommand(sublime_plugin.WindowCommand):
     window = self.window
     active_view = window.active_view()
     file_path = active_view.file_name()
-    
+
     if ( file_path ):
       if ( file_path and os.path.exists(file_path) ):
         related_paths = []

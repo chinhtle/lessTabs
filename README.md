@@ -14,7 +14,9 @@ Files that were visited in the last minute will not be closed. (customize from s
 
 - Close old and unused tabs with a simple shortcut.
 
-- By setting the value of the setting value "close_on_open_new" to true, the plugin will execute the closing command when a new tab is opened.
+- By setting the value of the setting value `close_on_open_new` to true, the plugin will execute the closing command when a new tab is opened.
+
+- Setting a value for option `keep_number_of_tabs` prevents all tabs from being closed and retains the specified number of tabs.
 
 - Close unrelated tabs to the open project.
 

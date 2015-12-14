@@ -6,5 +6,9 @@
   "accessed_life_span": 60,
 
   // If true the command of closing tabs will be executed when a new tab is opened
-  "close_on_open_new" : false
+  "close_on_open_new" : false,
+
+  // Number of tabs to keep while closing tabs. Default is zero which closes
+  // all tabs.
+  "keep_number_of_tabs" : 0
 }
